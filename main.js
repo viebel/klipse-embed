@@ -54,7 +54,7 @@ function encodeSrc(src) {
   return btoa(encodeURIComponent(src));
 }
 
-function addSnippet(src, lang) {
+function addSnippet(snippets, src, lang) {
   var wrapper = document.createElement('div');
   wrapper.dataset.language = lang;
   wrapper.className = 'klipse-snippet-wrapper';
@@ -62,7 +62,7 @@ function addSnippet(src, lang) {
   snippet.className = lang;
   snippet.innerText = src;
   wrapper.appendChild(snippet);
-  document.body.append(wrapper);
+  snippets.appendChild(wrapper);
 }
 
 function getSearchParams() {
@@ -124,40 +124,64 @@ function addSnippets() {
     if(name == 'src') {
       src = decodeSrc(val);
     } else if (name == 'lang') {
-      addSnippet(src, val);
+      addSnippet(snippets, src, val);
       src = '';
       lang = val;
     }
   }
 }
 
-function addButton(id, text) {
+function addButton(buttons, id, text) {
   var button = document.createElement('button');
   button.id = id;
   button.innerHTML = text;
-  document.body.append(button);
+  buttons.appendChild(button);
+  return button;
+}
+
+function addSelect(buttons, id, text, values) {
+  var s = document.createElement('select');
+  s.innerHTML = text,
+  s.id = id;
+  values.forEach(function(val) {
+    var el = document.createElement('option');
+    el.textContent = val[0];
+    el.value = val[1];
+    s.appendChild(el);
+  });
+  buttons.appendChild(s);
+  return s;
 }
 
 function editModeOn() {
   return getSearchParams().get("edit") == "1";
 }
 
-function newSnippet() {
+function newSnippet(snippets, lang) {
+  addSnippet(snippets, '', lang);
+  klipse.plugin.init(window.klipse_settings);
 }
 
-function addEventHandlers() {
+
+function addEventHandlers(snippets) {
   if(editModeOn()) {
-    addButton('update-url', 'Update URL');
+    var buttons = document.getElementById('buttons');
+    addButton(buttons, 'update-url', 'Update URL');
     document.getElementById('update-url').onclick = updateSearchParams;
 
-    addButton('new-snippet', 'New Snippet');
-    document.getElementById('new-snippet').onclick = newSnippet;
+    var langSelector = addSelect(buttons, 'snippet-select', 'Language', [['JavaScript', 'javascript'], ['Clojure', 'clojure']]);
+
+    addButton(buttons, 'new-snippet', 'New Snippet');
+    document.getElementById('new-snippet').onclick = function() {
+      newSnippet(snippets, langSelector.value);
+    }
   }
 }
 
 function main() {
   setKlipseSettings();
-  addSnippets();
-  addEventHandlers();
+  var snippets = document.getElementById('snippets');
+  addSnippets(snippets);
+  addEventHandlers(snippets);
 }
 main();
