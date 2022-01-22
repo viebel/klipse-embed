@@ -59,10 +59,12 @@
     var wrapper = document.createElement('div');
     wrapper.dataset.language = lang;
     wrapper.className = 'klipse-snippet-wrapper';
-    var snippet = document.createElement('div');
-    snippet.className = lang;
-    snippet.innerText = src;
-    wrapper.appendChild(snippet);
+    var pre = document.createElement('pre');
+    pre.className = lang;
+    var code = document.createElement('code');
+    code.innerHTML = src;
+    pre.appendChild(code);
+    wrapper.appendChild(pre);
     snippets.appendChild(wrapper);
   }
 
@@ -79,7 +81,6 @@
   function setSearchParams(params) {
     window.location.search = params.toString();
     var url = window.location.toString();
-    console.log(url);
   }
 
   function snippetRelatedParam(name) {
@@ -97,9 +98,9 @@
   }
 
   function setSnippets(params, snippets) {
-    snippets.forEach(function(snippet) {
-      console.log(snippet.innerText);
-      src = snippet.innerText;
+    snippets.forEach(function(snippet, index) {
+      // It's not safe to read from the HTML element (line breaks are not maintained).
+      src = window.klipse_editors[index].getValue();
       lang = snippet.parentElement.dataset.language;
       encodeSnippet(params, src, lang);
     });
