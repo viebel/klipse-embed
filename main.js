@@ -54,10 +54,14 @@ function encodeSrc(src) {
 }
 
 function addSnippet(src, lang) {
+  var wrapper = document.createElement('div');
+  wrapper.dataset.language = lang;
+  wrapper.className = 'klipse-snippet-wrapper';
   var snippet = document.createElement('div');
   snippet.className = lang;
   snippet.innerText = src;
-  document.body.append(snippet);
+  wrapper.appendChild(snippet);
+  document.body.append(wrapper);
 }
 
 function getSearchParams() {
@@ -96,7 +100,7 @@ function setSnippets(params, snippets) {
   snippets.forEach(function(snippet) {
     console.log(snippet.innerText);
     src = snippet.innerText;
-    lang = 'javascript';
+    lang = snippet.parentElement.dataset.language;
     encodeSnippet(params, src, lang);
   });
   return params;
