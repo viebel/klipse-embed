@@ -17,7 +17,7 @@
       selector_prolog_query: '.prolog-query',
       selector_render_jsx: '.jsx',
       selector_es2017: '.es2017',
-      selector_brainfuck: '.-brainfuck',
+      selector_brainfuck: '.brainfuck',
       selector_transpile_jsx: '.transpile-jsx',
       selector_eval_php: '.php',
       selector_eval_markdown: '.markdown',
@@ -140,16 +140,17 @@
     return button;
   }
 
-  function addSelect(buttons, id, text, values) {
+  function addSelect(buttons, id, text, values, defaultValue) {
     var s = document.createElement('select');
-    s.innerHTML = text,
-      s.id = id;
+    s.innerHTML = text;
+    s.id = id;
     values.forEach(function(val) {
       var el = document.createElement('option');
       el.textContent = val[0];
       el.value = val[1];
       s.appendChild(el);
     });
+    s.value = defaultValue;
     buttons.appendChild(s);
     return s;
   }
@@ -164,10 +165,21 @@
   }
 
   var languages = [
-    ['JavaScript', 'javascript'], 
+    ['Brainfuck', 'brainfuck'],
+    ['CPP', 'cpp'],
     ['Clojure', 'clojure'],
-    ['Reagent', 'reagent'],
     ['Go', 'go'],
+    ['HTML', 'html'],
+    ['JavaScript', 'javascript'], 
+    ['LISP', 'lisp'],
+    ['Lua', 'lua'],
+    ['Markdown', 'markdown'],
+    ['OCaml', 'ocaml'],
+    ['Python', 'python'],
+    ['Reagent', 'reagent'],
+    ['Ruby', 'ruby'],
+    ['SQL', 'sql'],
+    ['Scheme', 'scheme'],
   ];
 
   function addEventHandlers(snippets) {
@@ -176,7 +188,7 @@
       addButton(buttons, 'update-url', 'Update URL');
       document.getElementById('update-url').onclick = updateSearchParams;
 
-      var langSelector = addSelect(buttons, 'snippet-select', 'Language', languages);
+      var langSelector = addSelect(buttons, 'snippet-select', 'Language', languages, 'javascript');
 
       addButton(buttons, 'new-snippet', 'New Snippet');
       document.getElementById('new-snippet').onclick = function() {
