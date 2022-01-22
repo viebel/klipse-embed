@@ -131,8 +131,22 @@ function addSnippets() {
   }
 }
 
+function addButton(id, text) {
+  var button = document.createElement('button');
+  button.id = id;
+  button.innerHTML = text;
+  document.body.append(button);
+}
+
+function editModeOn() {
+  return getSearchParams().get("edit") == "1";
+}
+
 function addEventHandlers() {
-  document.getElementById('update-url').onclick = updateSearchParams;
+  if(editModeOn()) {
+    addButton('update-url', 'Update URL');
+    document.getElementById('update-url').onclick = updateSearchParams;
+  }
 }
 
 function main() {
