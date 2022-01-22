@@ -199,6 +199,7 @@
   }
 
   function main() {
+    console.log('Klipse embed version: ', '0.0.1');
     setKlipseSettings();
     var snippets = document.getElementById('snippets');
     addSnippets(snippets);
