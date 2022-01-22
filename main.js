@@ -44,11 +44,14 @@ function setKlipseSettings () {
 }
 
 function decodeSrc(src) {
-  return atob(decodeURIComponent(src));
+  return decodeURIComponent(atob(src));
 }
   
 function encodeSrc(src) {
-  return encodeURIComponent(btoa(src));
+  if(src == "\u200B") {  // That's how CodeMirror renders empty snippets
+    return "";
+  }
+  return btoa(encodeURIComponent(src));
 }
 
 function addSnippet(src, lang) {
@@ -66,8 +69,6 @@ function getSearchParams() {
   return new URLSearchParams(window.location.search);
 }
 
-
-  
 function encodeSnippet(params, src, lang) {
   params.append('src', encodeSrc(src));
   params.append('lang', lang);
@@ -114,7 +115,7 @@ function updateSearchParams() {
 
 function addSnippets() {
   var args = getSearchParams();
-  var src;
+  var src = '';
   var lang;
 
   for(var pair of args.entries()) {
@@ -123,12 +124,9 @@ function addSnippets() {
     if(name == 'src') {
       src = decodeSrc(val);
     } else if (name == 'lang') {
+      addSnippet(src, val);
+      src = '';
       lang = val;
-    }
-    if (src && lang) {
-      addSnippet(src, lang);
-      src = null;
-      lang = null;
     }
   }
 }
@@ -144,10 +142,16 @@ function editModeOn() {
   return getSearchParams().get("edit") == "1";
 }
 
+function newSnippet() {
+}
+
 function addEventHandlers() {
   if(editModeOn()) {
     addButton('update-url', 'Update URL');
     document.getElementById('update-url').onclick = updateSearchParams;
+
+    addButton('new-snippet', 'New Snippet');
+    document.getElementById('new-snippet').onclick = newSnippet;
   }
 }
 
