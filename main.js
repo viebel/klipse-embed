@@ -65,6 +65,11 @@
     code.innerHTML = src;
     pre.appendChild(code);
     wrapper.appendChild(pre);
+    var btn = addButton(wrapper, '', 'Remove');
+    btn.className += ' removeBtn';
+    btn.onclick = function() {
+      wrapper.remove();
+    };
     snippets.appendChild(wrapper);
   }
 
@@ -133,12 +138,14 @@
     }
   }
 
-  function addButton(buttons, id, text) {
+  function addButton(container, id, text) {
     var button = document.createElement('button');
-    button.id = id;
+    if(id) {
+      button.id = id;
+    }
     button.innerHTML = text;
     button.className = "button-8";
-    buttons.appendChild(button);
+    container.appendChild(button);
     return button;
   }
 
