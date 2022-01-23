@@ -1,0 +1,4 @@
+cp index.html main.js main.css docs/
+git add docs
+git commit -m 'Deploy'
+git push
