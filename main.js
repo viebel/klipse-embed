@@ -137,12 +137,14 @@
     var button = document.createElement('button');
     button.id = id;
     button.innerHTML = text;
+    button.className = "button-8";
     buttons.appendChild(button);
     return button;
   }
 
   function addSelect(buttons, id, text, values, defaultValue) {
     var s = document.createElement('select');
+    s.className = "button-8";
     s.innerHTML = text;
     s.id = id;
     values.forEach(function(val) {
@@ -186,7 +188,7 @@
   function addEventHandlers(snippets) {
     if(editModeOn()) {
       var buttons = document.getElementById('buttons');
-      addButton(buttons, 'update-url', 'Update URL');
+      addButton(buttons, 'update-url', 'Refresh');
       document.getElementById('update-url').onclick = updateSearchParams;
 
       var langSelector = addSelect(buttons, 'snippet-select', 'Language', languages, 'javascript');
