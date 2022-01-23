@@ -87,7 +87,6 @@
 
   function setSearchParams(params) {
     window.location.search = params.toString();
-    var url = window.location.toString();
   }
 
   function snippetRelatedParam(name) {
@@ -114,20 +113,24 @@
     return params;
   }
 
-  function updateSearchParams() {
+  function updatedSearchParams() {
     var snippets = Array.from(document.getElementsByClassName('klipse-snippet'));
     var params = cleanedSearchParams();
     setSnippets(params, snippets);
-    setSearchParams(params);
     return params;
   }
 
-  function displayPublicURL() {
-    var params = getSearchParams();
+  function updateSearchParams() {
+    setSearchParams(updatedSearchParams());
+    return params;
+  }
+
+  function updatePublicURL(a, init) {
+    var params = init? getSearchParams() : updatedSearchParams();
     params.delete('edit');
     var url = new URL(location);
     url.search = params.toString();
-    console.log('Public URL:', url.toString());
+    a.href = url.toString();
   }
 
   function addSnippets() {
@@ -159,11 +162,7 @@
     return button;
   }
 
-  function addSelect(buttons, id, text, values, defaultValue) {
-    var s = document.createElement('select');
-    s.className = "button-8";
-    s.innerHTML = text;
-    s.id = id;
+  function configSelect(s, values, defaultValue) {
     values.forEach(function(val) {
       var el = document.createElement('option');
       el.textContent = val[0];
@@ -171,7 +170,6 @@
       s.appendChild(el);
     });
     s.value = defaultValue;
-    buttons.appendChild(s);
     return s;
   }
 
@@ -204,17 +202,19 @@
 
   function addEventHandlers(snippets) {
     if(editModeOn()) {
-      var buttons = document.getElementById('buttons');
 
-      addButton(buttons, 'update-url', 'Refresh');
+      document.getElementById('buttons').style.visibility = "visible";
+
       document.getElementById('update-url').onclick = updateSearchParams;
 
-      addButton(buttons, 'publish-url', 'Display Public URL');
-      document.getElementById('publish-url').onclick = displayPublicURL;
+      var publicURL = document.getElementById('public-url');
+      updatePublicURL(publicURL, true);
+      document.getElementById('publish-url').onclick = function() {
+        updatePublicURL(publicURL);
+      };
+      var langSelector = document.getElementById('lang-select');
+      configSelect(langSelector, languages, 'javascript');
 
-      var langSelector = addSelect(buttons, 'snippet-select', 'Language', languages, 'javascript');
-
-      addButton(buttons, 'new-snippet', 'New Snippet');
       document.getElementById('new-snippet').onclick = function() {
         newSnippet(snippets, langSelector.value);
       }
