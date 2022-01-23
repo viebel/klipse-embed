@@ -1,4 +1,25 @@
 (function() {
+  var klipseMinURL = "https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js" ;
+  var klipseClojureURL =  "https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js?v=8.0.1";
+  var languageNames = {
+    'brainfuck': 'Brainfuck',
+    'cpp': 'CPP',
+    'go': 'Go',
+    'html': 'HTML',
+    'javascript': 'JavaScript',
+    'lisp': 'LISP',
+    'lua': 'Lua',
+    'markdown': 'Markdown',
+    'ocaml': 'OCaml',
+    'python': 'Python',
+    'ruby': 'Ruby',
+    'sql': 'SQL',
+    'scheme': 'Scheme',
+    'clojure': 'Clojure',
+    'reagent': 'Reagent',
+  };
+
+
   function setKlipseSettings () {
     window.klipse_settings = {
       codemirror_options_in: {
@@ -65,6 +86,13 @@
     code.innerHTML = src;
     pre.appendChild(code);
     wrapper.appendChild(pre);
+    if (editModeOn()) {
+      var btn = addButton(wrapper, '', 'Remove ' + languageNames[lang] + ' Snippet');
+      btn.className += ' removeBtn';
+      btn.onclick = function() {
+        wrapper.remove();
+      };
+    }
     snippets.appendChild(wrapper);
   }
 
@@ -80,7 +108,6 @@
 
   function setSearchParams(params) {
     window.location.search = params.toString();
-    var url = window.location.toString();
   }
 
   function snippetRelatedParam(name) {
@@ -107,12 +134,33 @@
     return params;
   }
 
-  function updateSearchParams() {
+  function updatedSearchParams() {
     var snippets = Array.from(document.getElementsByClassName('klipse-snippet'));
     var params = cleanedSearchParams();
     setSnippets(params, snippets);
-    setSearchParams(params);
     return params;
+  }
+
+  function updateSearchParams() {
+    setSearchParams(updatedSearchParams());
+  }
+
+  function updateClojureParams() {
+    var params = getSearchParams();
+    if (params.get('clojure') == '1') {
+      params.delete('clojure');
+    } else {
+      params.set('clojure', '1');
+    }
+    setSearchParams(params);
+  }
+
+  function updatePublicURL(a, init) {
+    var params = init? getSearchParams() : updatedSearchParams();
+    params.delete('edit');
+    var url = new URL(location);
+    url.search = params.toString();
+    a.href = url.toString();
   }
 
   function addSnippets() {
@@ -133,28 +181,25 @@
     }
   }
 
-  function addButton(buttons, id, text) {
+  function addButton(container, id, text) {
     var button = document.createElement('button');
-    button.id = id;
+    if(id) {
+      button.id = id;
+    }
     button.innerHTML = text;
     button.className = "button-8";
-    buttons.appendChild(button);
+    container.appendChild(button);
     return button;
   }
 
-  function addSelect(buttons, id, text, values, defaultValue) {
-    var s = document.createElement('select');
-    s.className = "button-8";
-    s.innerHTML = text;
-    s.id = id;
+  function configSelect(s, values, defaultValue) {
     values.forEach(function(val) {
       var el = document.createElement('option');
-      el.textContent = val[0];
-      el.value = val[1];
+      el.textContent = languageNames[val];
+      el.value = val;
       s.appendChild(el);
     });
     s.value = defaultValue;
-    buttons.appendChild(s);
     return s;
   }
 
@@ -162,50 +207,85 @@
     return getSearchParams().get("edit") == "1";
   }
 
+  function clojureModeOn() {
+    return getSearchParams().get("clojure") == "1";
+  }
+
   function newSnippet(snippets, lang) {
     addSnippet(snippets, '', lang);
     klipse.plugin.init(window.klipse_settings);
   }
 
-  var languages = [
-    ['Brainfuck', 'brainfuck'],
-    ['CPP', 'cpp'],
-    ['Clojure', 'clojure'],
-    ['Go', 'go'],
-    ['HTML', 'html'],
-    ['JavaScript', 'javascript'], 
-    ['LISP', 'lisp'],
-    ['Lua', 'lua'],
-    ['Markdown', 'markdown'],
-    ['OCaml', 'ocaml'],
-    ['Python', 'python'],
-    ['Reagent', 'reagent'],
-    ['Ruby', 'ruby'],
-    ['SQL', 'sql'],
-    ['Scheme', 'scheme'],
-  ];
+  function languages() {
+    var languages = [
+      'brainfuck',
+      'cpp',
+      'go',
+      'html',
+      'javascript',
+      'lisp',
+      'lua',
+      'markdown',
+      'ocaml',
+      'python',
+      'ruby',
+      'sql',
+      'scheme'];
+
+    var clojureLanguages = [
+      'clojure',
+      'reagent',
+    ];
+
+    if (clojureModeOn()) {
+      languages =  languages.concat(clojureLanguages);
+    }
+
+    return languages.sort();
+  }
 
   function addEventHandlers(snippets) {
     if(editModeOn()) {
-      var buttons = document.getElementById('buttons');
-      addButton(buttons, 'update-url', 'Refresh');
+
+      document.getElementById('buttons').style.visibility = "visible";
+
       document.getElementById('update-url').onclick = updateSearchParams;
+      var clojureBtn = document.getElementById('add-clojure');
+      clojureBtn.innerHTML = clojureModeOn()? "Deactivate Clojure" : "Activate Clojure";
+      clojureBtn.onclick = updateClojureParams;
 
-      var langSelector = addSelect(buttons, 'snippet-select', 'Language', languages, 'javascript');
+      var publicURL = document.getElementById('public-url');
+      updatePublicURL(publicURL, true);
+      document.getElementById('publish-url').onclick = function() {
+        updatePublicURL(publicURL);
+      };
+      var langSelector = document.getElementById('lang-select');
+      configSelect(langSelector, languages(), 'javascript');
 
-      addButton(buttons, 'new-snippet', 'New Snippet');
       document.getElementById('new-snippet').onclick = function() {
         newSnippet(snippets, langSelector.value);
       }
     }
   }
 
+  function addScript(url) {
+    var script = document.createElement('script');
+    script.src = url;
+    document.body.append(script);
+  }
+
+  function loadKlipse() {
+    var klipseURL = clojureModeOn()? klipseClojureURL : klipseMinURL;
+    addScript(klipseURL);
+  }
+
   function main() {
-    console.log('Klipse embed version: ', '0.0.2');
+    console.log('Klipse embed version: ', '0.0.3');
     setKlipseSettings();
     var snippets = document.getElementById('snippets');
     addSnippets(snippets);
     addEventHandlers(snippets);
+    loadKlipse();
   }
   main();
 })();
