@@ -65,11 +65,13 @@
     code.innerHTML = src;
     pre.appendChild(code);
     wrapper.appendChild(pre);
-    var btn = addButton(wrapper, '', 'Remove');
-    btn.className += ' removeBtn';
-    btn.onclick = function() {
-      wrapper.remove();
-    };
+    if (editModeOn()) {
+      var btn = addButton(wrapper, '', 'Remove');
+      btn.className += ' removeBtn';
+      btn.onclick = function() {
+        wrapper.remove();
+      };
+    }
     snippets.appendChild(wrapper);
   }
 
@@ -118,6 +120,14 @@
     setSnippets(params, snippets);
     setSearchParams(params);
     return params;
+  }
+
+  function displayPublicURL() {
+    var params = getSearchParams();
+    params.delete('edit');
+    var url = new URL(location);
+    url.search = params.toString();
+    console.log('Public URL:', url.toString());
   }
 
   function addSnippets() {
@@ -195,8 +205,12 @@
   function addEventHandlers(snippets) {
     if(editModeOn()) {
       var buttons = document.getElementById('buttons');
+
       addButton(buttons, 'update-url', 'Refresh');
       document.getElementById('update-url').onclick = updateSearchParams;
+
+      addButton(buttons, 'publish-url', 'Display Public URL');
+      document.getElementById('publish-url').onclick = displayPublicURL;
 
       var langSelector = addSelect(buttons, 'snippet-select', 'Language', languages, 'javascript');
 
