@@ -1,4 +1,25 @@
 (function() {
+  var klipseMinURL = "https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js" ;
+  var klipseClojureURL =  "https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js?v=8.0.1";
+  var languageNames = {
+    'brainfuck': 'Brainfuck',
+    'cpp': 'CPP',
+    'go': 'Go',
+    'html': 'HTML',
+    'javascript': 'JavaScript',
+    'lisp': 'LISP',
+    'lua': 'Lua',
+    'markdown': 'Markdown',
+    'ocaml': 'OCaml',
+    'python': 'Python',
+    'ruby': 'Ruby',
+    'sql': 'SQL',
+    'scheme': 'Scheme',
+    'clojure': 'Clojure',
+    'reagent': 'Reagent',
+  };
+
+
   function setKlipseSettings () {
     window.klipse_settings = {
       codemirror_options_in: {
@@ -66,7 +87,7 @@
     pre.appendChild(code);
     wrapper.appendChild(pre);
     if (editModeOn()) {
-      var btn = addButton(wrapper, '', 'Remove');
+      var btn = addButton(wrapper, '', 'Remove ' + languageNames[lang] + ' Snippet');
       btn.className += ' removeBtn';
       btn.onclick = function() {
         wrapper.remove();
@@ -122,7 +143,16 @@
 
   function updateSearchParams() {
     setSearchParams(updatedSearchParams());
-    return params;
+  }
+
+  function updateClojureParams() {
+    var params = getSearchParams();
+    if (params.get('clojure') == '1') {
+      params.delete('clojure');
+    } else {
+      params.set('clojure', '1');
+    }
+    setSearchParams(params);
   }
 
   function updatePublicURL(a, init) {
@@ -165,8 +195,8 @@
   function configSelect(s, values, defaultValue) {
     values.forEach(function(val) {
       var el = document.createElement('option');
-      el.textContent = val[0];
-      el.value = val[1];
+      el.textContent = languageNames[val];
+      el.value = val;
       s.appendChild(el);
     });
     s.value = defaultValue;
@@ -177,28 +207,42 @@
     return getSearchParams().get("edit") == "1";
   }
 
+  function clojureModeOn() {
+    return getSearchParams().get("clojure") == "1";
+  }
+
   function newSnippet(snippets, lang) {
     addSnippet(snippets, '', lang);
     klipse.plugin.init(window.klipse_settings);
   }
 
-  var languages = [
-    ['Brainfuck', 'brainfuck'],
-    ['CPP', 'cpp'],
-    ['Clojure', 'clojure'],
-    ['Go', 'go'],
-    ['HTML', 'html'],
-    ['JavaScript', 'javascript'], 
-    ['LISP', 'lisp'],
-    ['Lua', 'lua'],
-    ['Markdown', 'markdown'],
-    ['OCaml', 'ocaml'],
-    ['Python', 'python'],
-    ['Reagent', 'reagent'],
-    ['Ruby', 'ruby'],
-    ['SQL', 'sql'],
-    ['Scheme', 'scheme'],
-  ];
+  function languages() {
+    var languages = [
+      'brainfuck',
+      'cpp',
+      'go',
+      'html',
+      'javascript',
+      'lisp',
+      'lua',
+      'markdown',
+      'ocaml',
+      'python',
+      'ruby',
+      'sql',
+      'scheme'];
+
+    var clojureLanguages = [
+      'clojure',
+      'reagent',
+    ];
+
+    if (clojureModeOn()) {
+      languages =  languages.concat(clojureLanguages);
+    }
+
+    return languages.sort();
+  }
 
   function addEventHandlers(snippets) {
     if(editModeOn()) {
@@ -206,6 +250,9 @@
       document.getElementById('buttons').style.visibility = "visible";
 
       document.getElementById('update-url').onclick = updateSearchParams;
+      var clojureBtn = document.getElementById('add-clojure');
+      clojureBtn.innerHTML = clojureModeOn()? "Deactivate Clojure" : "Activate Clojure";
+      clojureBtn.onclick = updateClojureParams;
 
       var publicURL = document.getElementById('public-url');
       updatePublicURL(publicURL, true);
@@ -213,12 +260,23 @@
         updatePublicURL(publicURL);
       };
       var langSelector = document.getElementById('lang-select');
-      configSelect(langSelector, languages, 'javascript');
+      configSelect(langSelector, languages(), 'javascript');
 
       document.getElementById('new-snippet').onclick = function() {
         newSnippet(snippets, langSelector.value);
       }
     }
+  }
+
+  function addScript(url) {
+    var script = document.createElement('script');
+    script.src = url;
+    document.body.append(script);
+  }
+
+  function loadKlipse() {
+    var klipseURL = clojureModeOn()? klipseClojureURL : klipseMinURL;
+    addScript(klipseURL);
   }
 
   function main() {
@@ -227,6 +285,7 @@
     var snippets = document.getElementById('snippets');
     addSnippets(snippets);
     addEventHandlers(snippets);
+    loadKlipse();
   }
   main();
 })();

@@ -8,10 +8,15 @@
         <body>
                 <div id="snippets"></div>
                 <div id="buttons" class="authoring" style="visibility:hidden;">
-                        <span id="update-url" class="button-8">Refresh</span>
-                        <span id="publish-url" class="button-8">Update</span>
-                        <select id="lang-select" class="button-8"></select>
-                        <span id="new-snippet" class="button-8">New Snippet</span>
+                        <div>
+                                <span id="new-snippet" class="button-8">New Snippet</span>
+                                <select id="lang-select" class="button-8"></select>
+                        </div>
+                        <div>
+                                <span id="update-url" class="button-8">Refresh Page</span>
+                                <span id="publish-url" class="button-8">Update Public URL</span>
+                                <span id="add-clojure" class="button-8">Toggle Clojure</span>
+                        </div>
                         <div>
                                 <a id="public-url" class="a-8" target="_blank">
                                         Public URL
@@ -21,6 +26,5 @@
                 <script src="main.js"></script>
                 <link rel="stylesheet" type="text/css" href="main.css">
                 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
-                <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js?v=8.0.1"></script>
         </body>
 </html>
