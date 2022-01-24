@@ -191,9 +191,7 @@
     var src = '';
     var lang;
 
-    for(var pair of args.entries()) {
-      var name = pair[0];
-      var val = pair[1]
+    for(var [name, val] of args.entries()) {
       if(name == 'src') {
         src = decodeSrc(val);
       } else if (name == 'lang') {
