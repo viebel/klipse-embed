@@ -19,6 +19,8 @@
     'reagent': 'Reagent',
   };
 
+  var defaultLanguage = 'javascript';
+
 
   function setKlipseSettings () {
     window.klipse_settings = {
@@ -190,6 +192,9 @@
     var args = getSearchParams();
     var src = '';
     var lang;
+    if (!args.get('lang')) {
+      args.set('lang', defaultLanguage);
+    }
 
     for(var [name, val] of args.entries()) {
       if(name == 'src') {
