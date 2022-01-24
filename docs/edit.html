@@ -9,24 +9,35 @@
         </head>
         <body>
                 <div id="buttons" class="authoring" style="visibility:hidden;">
-                        <a id="public-url" class="a-8" target="_blank">Embed</a>
-                        <span id="multi-snippets">
-                                <button id="new-snippet" class="button-8">New Snippet</button>
-                                <select class="lang-select button-8"></select>
-                        </span>
-                        <span id="single-snippet">
-                                <select class="lang-select button-8"></select>
-                                <button id="activate-multi" class="button-8">More Snippets</button>
-                        </span>
-                        <span class="my-github-button">
-                                <a class="github-button" href="https://github.com/viebel/klipse-embed" data-size="large" data-show-count="true" aria-label="Star viebel/klipse-embed on GitHub">Star</a>
-                        </span>
+                        <div class="left">
+                                <button id="public-url" title="Open Public URL" class="button-8" target="_blank">
+                                        <i class="fa fa-share-alt"></i>
+                                </button>
+                                <span id="multi-snippets">
+                                        <button id="new-snippet" class="button-8">New Snippet</button>
+                                        <select class="lang-select button-8"></select>
+
+                                </span>
+                                <select class="lang-select button-8 select-8" title="Change Language"></select>
+                        </div>
+                        <div class="right">
+                                <span id="single-snippet">
+                                        <button id="activate-multi" title="Combine multiple snippets" class="button-8">
+                                                <i class="fas fa-angle-double-right"></i>
+                                        </button>
+                                </span>
+                                <span class="my-github">
+                                        <a class="github-button" href="https://github.com/viebel/klipse-embed" data-size="large" data-show-count="true" aria-label="Star viebel/klipse-embed on GitHub">Star</a>
+                                </span>
+                        </div>
+                        <div class="reset"></div>
                         <span>
                                 <button style="display:none;" id="add-clojure" class="button-8">Toggle Clojure</button>
                         </span>
                 </div>
                 <div id="snippets"></div>
                 <script src="edit.js"></script>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
                 <link rel="stylesheet" type="text/css" href="edit.css">
                 <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
         </body>
