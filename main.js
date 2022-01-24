@@ -74,7 +74,9 @@
   }
 
   function clojureModeOn(params) {
-    return params.get("clojure") == "1";
+    return (params.get("clojure") == "1") || 
+      (params.get("lang") == "clojure") ||
+      (params.get("lang") == "reagent");
   }
 
   function multipleSnippetsOn(params) {
