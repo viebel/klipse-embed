@@ -281,7 +281,7 @@
   }
 
   function main() {
-    console.log('Klipse embed version: ', '0.0.3');
+    console.log('Klipse embed version: ', '0.0.4');
     setKlipseSettings();
     var snippets = document.getElementById('snippets');
     addSnippets(snippets);
