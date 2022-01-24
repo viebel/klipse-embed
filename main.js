@@ -65,12 +65,20 @@
     };
   }
 
-  function editModeOn() {
-    return !(getSearchParams().get("edit") == "0");
+  function editModeOn(params) {
+    return !(params.get("edit") == "0");
   }
 
-  function clojureModeOn() {
-    return getSearchParams().get("clojure") == "1";
+  function setEditMode(params, on) {
+    params.set("edit", on? "1" : "0");
+  }
+
+  function clojureModeOn(params) {
+    return params.get("clojure") == "1";
+  }
+
+  function multipleSnippetsOn(params) {
+    return params.get("multisnippets") == "1";
   }
 
   function decodeSrc(src) {
@@ -94,7 +102,7 @@
     code.innerHTML = src;
     pre.appendChild(code);
     wrapper.appendChild(pre);
-    if (editModeOn()) {
+    if (editModeOn(getSearchParams()) && multipleSnippetsOn(getSearchParams())) {
       var btn = addButton(wrapper, '', 'Remove ' + languageNames[lang] + ' Snippet');
       btn.className += ' removeBtn';
       btn.onclick = function() {
@@ -165,7 +173,7 @@
 
   function updatePublicURL(a, init) {
     var params = init? getSearchParams() : updatedSearchParams();
-    params.set("edit", "0");
+    setEditMode(params, false);
     var url = new URL(location);
     url.search = params.toString();
     a.href = url.toString();
@@ -238,7 +246,7 @@
       'reagent',
     ];
 
-    if (clojureModeOn()) {
+    if (clojureModeOn(getSearchParams())) {
       languages =  languages.concat(clojureLanguages);
     }
 
@@ -246,13 +254,13 @@
   }
 
   function addEventHandlers(snippets) {
-    if(editModeOn()) {
+    if(editModeOn(getSearchParams())) {
 
       document.getElementById('buttons').style.visibility = "visible";
 
       document.getElementById('update-url').onclick = updateSearchParams;
       var clojureBtn = document.getElementById('add-clojure');
-      clojureBtn.innerHTML = clojureModeOn()? "Deactivate Clojure" : "Activate Clojure";
+      clojureBtn.innerHTML = clojureModeOn(getSearchParams())? "Deactivate Clojure" : "Activate Clojure";
       clojureBtn.onclick = updateClojureParams;
 
       var publicURL = document.getElementById('public-url');
@@ -263,8 +271,12 @@
       var langSelector = document.getElementById('lang-select');
       configSelect(langSelector, languages(), 'javascript');
 
-      document.getElementById('new-snippet').onclick = function() {
-        newSnippet(snippets, langSelector.value);
+      if(multipleSnippetsOn(getSearchParams())) {
+        document.getElementById('new-snippet').onclick = function() {
+          newSnippet(snippets, langSelector.value);
+        }
+      } else {
+        document.getElementById('multi-snippets').remove();
       }
     }
   }
@@ -276,7 +288,7 @@
   }
 
   function loadKlipse() {
-    var klipseURL = clojureModeOn()? klipseClojureURL : klipseMinURL;
+    var klipseURL = clojureModeOn(getSearchParams())? klipseClojureURL : klipseMinURL;
     addScript(klipseURL);
   }
 
