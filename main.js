@@ -159,6 +159,12 @@
     setSearchParams(params);
   }
 
+  function activateMulti() {
+    var params = getSearchParams();
+    params.set('multisnippets', '1');
+    setSearchParams(params);
+  }
+
   function snippetRelatedParam(name) {
     return ['src', 'lang'].includes(name);
   }
@@ -300,6 +306,7 @@
         langSelector.onchange = function() {
           changeLang(langSelector.value);
         }
+        document.getElementById('activate-multi').onclick = activateMulti;
       }
     }
   }
