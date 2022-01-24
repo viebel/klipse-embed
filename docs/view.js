@@ -5,6 +5,7 @@
     window.klipse_settings = {
       codemirror_options_in: {
         lineWrapping: true,
+        lineNumbers: true,
         autoCloseBrackets: true
       },
       codemirror_options_out: {
@@ -69,6 +70,10 @@
     pre.appendChild(code);
     wrapper.appendChild(pre);
     snippets.appendChild(wrapper);
+    var mention = document.createElement('div');
+    mention.className = "mention";
+    mention.innerHTML = "Interactive snippet powered with \u2764 by <a target = '_new' href='https://viebel.github.io/klipse-embed/edit.html'>Klipse</a>";
+    wrapper.appendChild(mention);
   }
 
   function getSearchParams() {
@@ -102,7 +107,7 @@
   }
 
   function main() {
-    console.log('Klipse embed version: ', '0.0.5');
+    console.log('Klipse embed version: ', '0.0.6');
     setKlipseSettings();
     var snippets = document.getElementById('snippets');
     addSnippets(snippets);
