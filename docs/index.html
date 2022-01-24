@@ -4,22 +4,19 @@
                 <meta charset="utf-8">
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>Klipse Embed</title>
         </head>
         <body>
                 <div id="snippets"></div>
                 <div id="buttons" class="authoring" style="visibility:hidden;">
-                        <div>
+                        <div id="multi-snippets">
                                 <span id="new-snippet" class="button-8">New Snippet</span>
                                 <select id="lang-select" class="button-8"></select>
                         </div>
                         <div>
-                                <span id="update-url" class="button-8">Refresh Page</span>
-                                <span id="publish-url" class="button-8">Update Public URL</span>
-                                <span id="add-clojure" class="button-8">Toggle Clojure</span>
-                        </div>
-                        <div>
+                                <span style="display:none;" id="add-clojure" class="button-8">Toggle Clojure</span>
                                 <a id="public-url" class="a-8" target="_blank">
-                                        Public URL
+                                        Embed
                                 </a>
                         </div>
                 </div>

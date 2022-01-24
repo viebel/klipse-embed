@@ -65,6 +65,24 @@
     };
   }
 
+  function editModeOn(params) {
+    return !(params.get("edit") == "0");
+  }
+
+  function setEditMode(params, on) {
+    params.set("edit", on? "1" : "0");
+  }
+
+  function clojureModeOn(params) {
+    return (params.get("clojure") == "1") || 
+      (params.get("lang") == "clojure") ||
+      (params.get("lang") == "reagent");
+  }
+
+  function multipleSnippetsOn(params) {
+    return params.get("multisnippets") == "1";
+  }
+
   function decodeSrc(src) {
     return decodeURIComponent(atob(src));
   }
@@ -80,13 +98,16 @@
     var wrapper = document.createElement('div');
     wrapper.dataset.language = lang;
     wrapper.className = 'klipse-snippet-wrapper';
+    window.wrapper = wrapper;
+    wrapper.onmouseleave = updateSearchParams;
+
     var pre = document.createElement('pre');
     pre.className = lang;
     var code = document.createElement('code');
     code.innerHTML = src;
     pre.appendChild(code);
     wrapper.appendChild(pre);
-    if (editModeOn()) {
+    if (editModeOn(getSearchParams()) && multipleSnippetsOn(getSearchParams())) {
       var btn = addButton(wrapper, '', 'Remove ' + languageNames[lang] + ' Snippet');
       btn.className += ' removeBtn';
       btn.onclick = function() {
@@ -142,7 +163,9 @@
   }
 
   function updateSearchParams() {
-    setSearchParams(updatedSearchParams());
+    var url = new URL(location);
+    url.search = updatedSearchParams().toString();
+    history.pushState({}, '', url);
   }
 
   function updateClojureParams() {
@@ -157,7 +180,7 @@
 
   function updatePublicURL(a, init) {
     var params = init? getSearchParams() : updatedSearchParams();
-    params.delete('edit');
+    setEditMode(params, false);
     var url = new URL(location);
     url.search = params.toString();
     a.href = url.toString();
@@ -203,13 +226,6 @@
     return s;
   }
 
-  function editModeOn() {
-    return getSearchParams().get("edit") == "1";
-  }
-
-  function clojureModeOn() {
-    return getSearchParams().get("clojure") == "1";
-  }
 
   function newSnippet(snippets, lang) {
     addSnippet(snippets, '', lang);
@@ -237,7 +253,7 @@
       'reagent',
     ];
 
-    if (clojureModeOn()) {
+    if (clojureModeOn(getSearchParams())) {
       languages =  languages.concat(clojureLanguages);
     }
 
@@ -245,25 +261,28 @@
   }
 
   function addEventHandlers(snippets) {
-    if(editModeOn()) {
+    if(editModeOn(getSearchParams())) {
 
       document.getElementById('buttons').style.visibility = "visible";
 
-      document.getElementById('update-url').onclick = updateSearchParams;
       var clojureBtn = document.getElementById('add-clojure');
-      clojureBtn.innerHTML = clojureModeOn()? "Deactivate Clojure" : "Activate Clojure";
+      clojureBtn.innerHTML = clojureModeOn(getSearchParams())? "Deactivate Clojure" : "Activate Clojure";
       clojureBtn.onclick = updateClojureParams;
 
       var publicURL = document.getElementById('public-url');
       updatePublicURL(publicURL, true);
-      document.getElementById('publish-url').onclick = function() {
+      publicURL.onmouseover = function() {
         updatePublicURL(publicURL);
       };
       var langSelector = document.getElementById('lang-select');
       configSelect(langSelector, languages(), 'javascript');
 
-      document.getElementById('new-snippet').onclick = function() {
-        newSnippet(snippets, langSelector.value);
+      if(multipleSnippetsOn(getSearchParams())) {
+        document.getElementById('new-snippet').onclick = function() {
+          newSnippet(snippets, langSelector.value);
+        }
+      } else {
+        document.getElementById('multi-snippets').remove();
       }
     }
   }
@@ -275,12 +294,12 @@
   }
 
   function loadKlipse() {
-    var klipseURL = clojureModeOn()? klipseClojureURL : klipseMinURL;
+    var klipseURL = clojureModeOn(getSearchParams())? klipseClojureURL : klipseMinURL;
     addScript(klipseURL);
   }
 
   function main() {
-    console.log('Klipse embed version: ', '0.0.3');
+    console.log('Klipse embed version: ', '0.0.4');
     setKlipseSettings();
     var snippets = document.getElementById('snippets');
     addSnippets(snippets);
