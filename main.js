@@ -65,6 +65,14 @@
     };
   }
 
+  function editModeOn() {
+    return !(getSearchParams().get("edit") == "0");
+  }
+
+  function clojureModeOn() {
+    return getSearchParams().get("clojure") == "1";
+  }
+
   function decodeSrc(src) {
     return decodeURIComponent(atob(src));
   }
@@ -157,7 +165,7 @@
 
   function updatePublicURL(a, init) {
     var params = init? getSearchParams() : updatedSearchParams();
-    params.delete('edit');
+    params.set("edit", "0");
     var url = new URL(location);
     url.search = params.toString();
     a.href = url.toString();
@@ -203,13 +211,6 @@
     return s;
   }
 
-  function editModeOn() {
-    return getSearchParams().get("edit") == "1";
-  }
-
-  function clojureModeOn() {
-    return getSearchParams().get("clojure") == "1";
-  }
 
   function newSnippet(snippets, lang) {
     addSnippet(snippets, '', lang);
