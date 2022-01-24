@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>Create a Klipse Embed</title>
+        </head>
+        <body>
+                <div id="buttons" class="authoring" style="visibility:hidden;">
+                        <a id="public-url" class="a-8" target="_blank">Embed</a>
+                        <span id="multi-snippets">
+                                <button id="new-snippet" class="button-8">New Snippet</button>
+                                <select class="lang-select button-8"></select>
+                        </span>
+                        <span id="single-snippet">
+                                <select class="lang-select button-8"></select>
+                                <button id="activate-multi" class="button-8">More Snippets</button>
+                        </span>
+                        <span>
+                                <button style="display:none;" id="add-clojure" class="button-8">Toggle Clojure</button>
+                        </span>
+                </div>
+                <div id="snippets"></div>
+                <script src="edit.js"></script>
+                <link rel="stylesheet" type="text/css" href="main.css">
+                <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+        </body>
+</html>
