@@ -11,7 +11,6 @@
   line-height: 1.15385;
   margin: 0;
   outline: none;
-  padding: 8px .8em;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -21,6 +20,10 @@
   vertical-align: baseline;
   white-space: nowrap;
 }
+
+.button-8.select-8 {
+}
+
 
 .button-8:hover,
 .button-8:focus {
@@ -61,20 +64,27 @@
 
 .authoring  *{
   font-size: 24px;
-  font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
-  font-weight: 400;
 }
 
 .authoring {
-  border-top: 1px solid #a0c7e4;
-  padding: 10px 0px 10px 0px;
+  padding: 15px 0px 15px 0px;
 }
 
 a:link {
   padding-left: 10px;
   color: #39739d;
+  text-decoration: none;
 }
 
-.line {
-  margin-bottom: 10px;
+.left {
+  float: left;
 }
+
+.right {
+  float: right;
+}
+
+.reset {
+  clear: both;
+}
+
