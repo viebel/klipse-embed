@@ -9,15 +9,20 @@
         <body>
                 <div id="snippets"></div>
                 <div id="buttons" class="authoring" style="visibility:hidden;">
-                        <div id="multi-snippets">
-                                <span id="new-snippet" class="button-8">New Snippet</span>
-                                <select id="lang-select" class="button-8"></select>
+                        <div class="line">
+                                <a id="public-url" class="a-8" target="_blank">Embed</a>
                         </div>
-                        <div>
-                                <span style="display:none;" id="add-clojure" class="button-8">Toggle Clojure</span>
-                                <a id="public-url" class="a-8" target="_blank">
-                                        Embed
-                                </a>
+                        <div class="line">
+                                <div id="multi-snippets">
+                                        <span id="new-snippet" class="button-8">New Snippet</span>
+                                        <select class="lang-select button-8"></select>
+                                </div>
+                                <div id="single-snippet">
+                                        <select class="lang-select button-8"></select>
+                                </div>
+                                <div>
+                                        <span style="display:none;" id="add-clojure" class="button-8">Toggle Clojure</span>
+                                </div>
                         </div>
                 </div>
                 <script src="main.js"></script>

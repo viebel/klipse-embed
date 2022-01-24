@@ -19,6 +19,26 @@
     'reagent': 'Reagent',
   };
 
+  var basicLanguages = [
+    'brainfuck',
+    'cpp',
+    'go',
+    'html',
+    'javascript',
+    'lisp',
+    'lua',
+    'markdown',
+    'ocaml',
+    'python',
+    'ruby',
+    'sql',
+    'scheme'];
+
+  var clojureLanguages = [
+    'clojure',
+    'reagent',
+  ];
+
   var defaultLanguage = 'javascript';
 
 
@@ -133,6 +153,12 @@
     window.location.search = params.toString();
   }
 
+  function changeLang(lang) {
+    var params = getSearchParams();
+    params.set('lang', lang);
+    setSearchParams(params);
+  }
+
   function snippetRelatedParam(name) {
     return ['src', 'lang'].includes(name);
   }
@@ -218,7 +244,8 @@
     return button;
   }
 
-  function configSelect(s, values, defaultValue) {
+  function configSelect(s, values) {
+    var defaultValue = getSearchParams().get('lang') || 'javascript';
     values.forEach(function(val) {
       var el = document.createElement('option');
       el.textContent = languageNames[val];
@@ -236,31 +263,12 @@
   }
 
   function languages() {
-    var languages = [
-      'brainfuck',
-      'cpp',
-      'go',
-      'html',
-      'javascript',
-      'lisp',
-      'lua',
-      'markdown',
-      'ocaml',
-      'python',
-      'ruby',
-      'sql',
-      'scheme'];
+    var res = clojureModeOn(getSearchParams()) ? [...basicLanguages, ...clojureLanguages] : [...basicLanguages];
+    return res.sort();
+  }
 
-    var clojureLanguages = [
-      'clojure',
-      'reagent',
-    ];
-
-    if (clojureModeOn(getSearchParams())) {
-      languages =  languages.concat(clojureLanguages);
-    }
-
-    return languages.sort();
+  function allLanguages() {
+    return [...basicLanguages, ...clojureLanguages].sort();
   }
 
   function addEventHandlers(snippets) {
@@ -277,15 +285,21 @@
       publicURL.onmouseover = function() {
         updatePublicURL(publicURL);
       };
-      var langSelector = document.getElementById('lang-select');
-      configSelect(langSelector, languages(), 'javascript');
 
       if(multipleSnippetsOn(getSearchParams())) {
         document.getElementById('new-snippet').onclick = function() {
           newSnippet(snippets, langSelector.value);
         }
+        document.getElementById('single-snippet').remove();
+        var langSelector = document.getElementsByClassName('lang-select')[0];
+        configSelect(langSelector, languages());
       } else {
         document.getElementById('multi-snippets').remove();
+        var langSelector = document.getElementsByClassName('lang-select')[0];
+        configSelect(langSelector, allLanguages());
+        langSelector.onchange = function() {
+          changeLang(langSelector.value);
+        }
       }
     }
   }
