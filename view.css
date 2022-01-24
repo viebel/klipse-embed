@@ -1,0 +1,23 @@
+.mention {
+    padding: 10px;
+    overflow: hidden;
+    font: 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    color: var(--color-fg-muted);
+    background-color: #f7f7f7;
+}
+
+
+.mention a {
+    font-weight: 600;
+    color: #666;
+    text-decoration: none;
+    border: 0;
+}
+
+
+.klipse-snippet-wrapper {
+    overflow: auto;
+    word-wrap: normal;
+    background-color: var(--color-canvas-default);
+    border-bottom: 1px solid #ddd;
+}
