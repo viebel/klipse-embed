@@ -96,6 +96,9 @@
     var wrapper = document.createElement('div');
     wrapper.dataset.language = lang;
     wrapper.className = 'klipse-snippet-wrapper';
+    window.wrapper = wrapper;
+    wrapper.onmouseleave = updateSearchParams;
+
     var pre = document.createElement('pre');
     pre.className = lang;
     var code = document.createElement('code');
@@ -158,7 +161,9 @@
   }
 
   function updateSearchParams() {
-    setSearchParams(updatedSearchParams());
+    var url = new URL(location);
+    url.search = updatedSearchParams().toString();
+    history.pushState({}, '', url);
   }
 
   function updateClojureParams() {
@@ -258,7 +263,6 @@
 
       document.getElementById('buttons').style.visibility = "visible";
 
-      document.getElementById('update-url').onclick = updateSearchParams;
       var clojureBtn = document.getElementById('add-clojure');
       clojureBtn.innerHTML = clojureModeOn(getSearchParams())? "Deactivate Clojure" : "Activate Clojure";
       clojureBtn.onclick = updateClojureParams;
