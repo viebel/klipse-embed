@@ -206,7 +206,7 @@
 
   function updatePublicURL(a) {
     var url = new URL(location);
-    url.pathname = '/'; 
+    url.pathname =  url.pathname.replace('edit\.html', '')
     a.href = url.toString();
   }
 
@@ -310,7 +310,7 @@
   }
 
   function main() {
-    console.log('Klipse embed version: ', '0.0.5');
+    console.log('Klipse embed version: ', '0.0.6');
     setKlipseSettings();
     var snippets = document.getElementById('snippets');
     addSnippets(snippets);
