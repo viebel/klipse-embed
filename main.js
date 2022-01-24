@@ -265,7 +265,7 @@
 
       var publicURL = document.getElementById('public-url');
       updatePublicURL(publicURL, true);
-      document.getElementById('publish-url').onclick = function() {
+      publicURL.onmouseover = function() {
         updatePublicURL(publicURL);
       };
       var langSelector = document.getElementById('lang-select');
