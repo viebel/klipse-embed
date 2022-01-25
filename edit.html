@@ -10,22 +10,38 @@
         <body>
                 <div id="buttons" class="authoring" style="visibility:hidden;">
                         <div class="left">
-                                <button title="Open Public URL" class="button-8" target="_blank">
-                                        <a id="public-url"><i class="fa fa-share-alt"></i></a>
-                                </button>
+                                <span class="share-url-wrapper">
+                                        <select id="share-url-select" title="Open Public URL" class="select-8 button-8 no-padding" title="">
+                                                <option value="share">Share</option>
+                                                <option value="embed">Embed</option>
+                                        </select>
+                                        <span>
+                                                <input id="share-url-input" class="small-input" type="text" readonly>
+                                        </span>
+
+                                        <clipboard-copy for="share-url" class="button-8">
+                                                <i class="far fa-clone"></i>
+                                        </clipboard-copy>
+
+                                </span>
                                 <span id="multi-snippets">
                                         <button id="new-snippet" class="button-8">New Snippet</button>
                                         <select class="lang-select button-8"></select>
 
                                 </span>
-                                <select class="lang-select button-8 select-8" title="Change Language"></select>
+                                <span class="horizontal-space">
+                                        <select class="lang-select button-8 select-8" title="Change Language"></select>
+                                </span>
+                                <span class="horizontal-space">
+                                        <span id="single-snippet">
+                                                <button id="activate-multi" title="Combine multiple snippets" class="button-8">
+                                                        <i class="fas fa-angle-double-right"></i>
+                                                </button>
+                                        </span>
+                                </span>
+
                         </div>
                         <div class="right">
-                                <span id="single-snippet">
-                                        <button id="activate-multi" title="Combine multiple snippets" class="button-8">
-                                                <i class="fas fa-angle-double-right"></i>
-                                        </button>
-                                </span>
                                 <span class="my-github">
                                         <a class="github-button" href="https://github.com/viebel/klipse-embed" data-size="large" data-show-count="true" aria-label="Star viebel/klipse-embed on GitHub">Star</a>
                                 </span>

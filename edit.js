@@ -204,10 +204,26 @@
     setSearchParams(params);
   }
 
-  function updatePublicURL(a) {
+  function iframeStr({width, height, src}) {
+    return `<iframe src="${src}" width="${width}" height="${height}"></iframe>`;
+  }
+
+  function updatePublicURL(input, select) {
     var url = new URL(location);
+    var shareType = select.value;
     url.pathname =  url.pathname.replace('edit\.html', '')
-    a.href = url.toString();
+    urlString = url.toString();
+    if(shareType == "embed") {
+      var iframe = document.createElement('iframe');
+      iframe.src = urlString;
+      input.value = iframeStr({
+        src: urlString,
+        width: "400px",
+        height: "600px"
+      });
+    } else {
+      input.value = urlString;
+    }
   }
 
   function addSnippets() {
@@ -274,10 +290,14 @@
       clojureBtn.innerHTML = clojureModeOn(getSearchParams())? "Deactivate Clojure" : "Activate Clojure";
       clojureBtn.onclick = updateClojureParams;
 
-      var publicURL = document.getElementById('public-url');
-      updatePublicURL(publicURL);
+      var publicURL = document.getElementById('share-url-input');
+      var shareURLSelect = document.getElementById('share-url-select');
+      updatePublicURL(publicURL, shareURLSelect);
       publicURL.onmouseover = function() {
-        updatePublicURL(publicURL);
+        updatePublicURL(publicURL, shareURLSelect);
+      };
+      shareURLSelect.onchange = function() {
+        updatePublicURL(publicURL, shareURLSelect);
       };
 
       if(multipleSnippetsOn(getSearchParams())) {
