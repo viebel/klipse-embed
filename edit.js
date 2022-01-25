@@ -203,6 +203,11 @@
     }
     setSearchParams(params);
   }
+  function copyToClipboard(str) {
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText)
+    return navigator.clipboard.writeText(str);
+    return Promise.reject('The Clipboard API is not available.');
+  }
 
   function iframeStr({width, height, src}) {
     return `<iframe src="${src}" width="${width}" height="${height}"></iframe>`;
@@ -299,6 +304,11 @@
       shareURLSelect.onchange = function() {
         updatePublicURL(publicURL, shareURLSelect);
       };
+ 
+      document.getElementById('copy-url').onclick = function() {
+        updatePublicURL(publicURL, shareURLSelect);
+        copyToClipboard(publicURL.value);
+      }
 
       if(multipleSnippetsOn(getSearchParams())) {
         document.getElementById('new-snippet').onclick = function() {
