@@ -138,3 +138,35 @@ clipboard-copy.button-8 {
 clipboard-copy i {
   font-size: 0.8em !important;
 }
+
+body * {
+  font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.main {
+  padding: 10px 10px 10px 10px;
+}
+
+.header {
+  top: 0;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  width: 100%;
+  font-size: 2em;
+  height: 50px;
+  background-color: #e1ecf4;
+  color: #39739d;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.my-github {
+  margin-right: 10px;
+  padding-right: 10px;
+}

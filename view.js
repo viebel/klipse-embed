@@ -72,7 +72,7 @@
     snippets.appendChild(wrapper);
     var mention = document.createElement('div');
     mention.className = "mention";
-    mention.innerHTML = "Interactive snippet powered with \u2764 by <a target = '_new' href='https://viebel.github.io/klipse-embed/edit.html'>Klipse</a>";
+    mention.innerHTML = "Interactive snippet powered with \u2764 by <a target = '_new' href='https://github.com/viebel/klipse'>Klipse</a>";
     wrapper.appendChild(mention);
   }
 

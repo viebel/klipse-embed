@@ -1,4 +1,0 @@
-cp index.html edit.html view.js view.css edit.css edit.js docs/
-git add docs
-git commit -m 'Deploy'
-git push
