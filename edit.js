@@ -41,6 +41,11 @@
 
   var defaultLanguage = 'javascript';
 
+  var defaultSrc = '// Type your code here';
+
+  var defaultSrcByLang = {
+    'javascript': '// Edit the code, the browser evaluates as you type \n[1, 2, 3].map(x => x + 1);'
+  };
 
   function setKlipseSettings () {
     window.klipse_settings = {
@@ -109,6 +114,9 @@
   }
 
   function addSnippet(snippets, src, lang) {
+    if(src == '') {
+      src = defaultSrcByLang[lang] || defaultSrc;
+    }
     var wrapper = document.createElement('div');
     wrapper.dataset.language = lang;
     wrapper.className = 'klipse-snippet-wrapper';
