@@ -179,7 +179,7 @@ body {
   padding-right: 10px;
 }
 
-.CodeMirror {
-    font-family: 'FiraCode', monospace;
+.CodeMirror  *{
+    font-family: 'FiraCode', monospace !important;
 }
 
