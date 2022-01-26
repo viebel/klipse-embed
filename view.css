@@ -22,3 +22,9 @@
     overflow: auto;
     word-wrap: normal;
 }
+
+.CodeMirror {
+    font-family: 'FiraCode', monospace;
+}
+
+

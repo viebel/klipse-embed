@@ -178,3 +178,8 @@ body {
 .logo-wrapper {
   padding-right: 10px;
 }
+
+.CodeMirror {
+    font-family: 'FiraCode', monospace;
+}
+
