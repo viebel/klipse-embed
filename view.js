@@ -47,6 +47,24 @@
     };
   }
 
+  var languageNames = {
+    'brainfuck': 'Brainfuck',
+    'cpp': 'CPP',
+    'go': 'Go',
+    'html': 'HTML',
+    'javascript': 'JavaScript',
+    'lisp': 'LISP',
+    'lua': 'Lua',
+    'markdown': 'Markdown',
+    'ocaml': 'OCaml',
+    'python': 'Python',
+    'ruby': 'Ruby',
+    'sql': 'SQL',
+    'scheme': 'Scheme',
+    'clojure': 'Clojure',
+    'reagent': 'Reagent',
+  };
+
   function clojureModeOn(params) {
     return (params.get("clojure") == "1") || 
       (params.get("lang") == "clojure") ||
@@ -72,7 +90,7 @@
     snippets.appendChild(wrapper);
     var mention = document.createElement('div');
     mention.className = "mention";
-    mention.innerHTML = "Interactive snippet powered with \u2764 by <a target = '_new' href='https://github.com/viebel/klipse'>Klipse</a>";
+    mention.innerHTML = `Interactive ${languageNames[lang]} snippet powered with \u2764 by <a target = '_new' href='https://github.com/viebel/klipse'>Klipse</a>`;
     wrapper.appendChild(mention);
   }
 
