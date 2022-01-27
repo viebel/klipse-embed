@@ -75,7 +75,58 @@
     return decodeURIComponent(atob(src));
   }
 
+  function encodeSrc(src) {
+    if(src == "\u200B") {  // That's how CodeMirror renders empty snippets
+      return "";
+    }
+    return btoa(encodeURIComponent(src));
+  }
+
+  function encodeSnippet(params, src, lang) {
+    params.append('src', encodeSrc(src));
+    params.append('lang', lang);
+    return params;
+  }
+
+  function setSnippets(params, snippets) {
+    snippets.forEach(function(snippet, index) {
+      // It's not safe to read from the HTML element (line breaks are not maintained).
+      src = window.klipse_editors[index].getValue();
+      lang = snippet.parentElement.dataset.language;
+      encodeSnippet(params, src, lang);
+    });
+    return params;
+  }
+
+  function snippetRelatedParam(name) {
+    return ['src', 'lang'].includes(name);
+  }
+
+  function cleanedSearchParams() {
+    var cleanedParams = new URLSearchParams();
+    for(var pair of getSearchParams().entries()) {
+      if(!snippetRelatedParam(pair[0])) {
+        cleanedParams.append(pair[0], pair[1]);
+      }
+    }
+    return cleanedParams;
+  }
+  function updatedSearchParams() {
+    var snippets = Array.from(document.getElementsByClassName('klipse-snippet'));
+    var params = cleanedSearchParams();
+    setSnippets(params, snippets);
+    return params;
+  }
+
+  function updateSearchParams() {
+    var url = new URL(location);
+    url.search = updatedSearchParams().toString();
+    history.pushState({}, '', url);
+  }
+
   function addSnippet(snippets, src, lang) {
+    var container = document.createElement('div');
+    container.className = 'klipse-snippet-container';
     var wrapper = document.createElement('div');
     wrapper.dataset.language = lang;
     wrapper.className = 'klipse-snippet-wrapper';
@@ -87,11 +138,14 @@
     code.innerHTML = src;
     pre.appendChild(code);
     wrapper.appendChild(pre);
-    snippets.appendChild(wrapper);
+    container.appendChild(wrapper);
+    wrapper.onmouseleave = updateSearchParams;
+
+    snippets.appendChild(container);
     var mention = document.createElement('div');
     mention.className = "mention";
     mention.innerHTML = `Interactive ${languageNames[lang]} snippet powered with \u2764 by <a target = '_new' href='https://viebel.github.io/klipse-embed/edit.html?lang=${lang}'>Klipse</a>`;
-    wrapper.appendChild(mention);
+    container.appendChild(mention);
   }
 
   function getSearchParams() {
