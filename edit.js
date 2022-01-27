@@ -43,8 +43,64 @@
 
   var defaultSrc = '// Type your code here';
 
+  var pythonSnippet = [
+    '# Write your own Python code', 
+    '# Beautiful is better than ugly',
+    'language = "Python"',
+    'print("I love {}!".format(language))'
+  ];
+
+  var clojureSnippet = [
+    ';; Create your own Clojure forms', 
+    ';; Simple is not easy', 
+    '(map inc [1 2 3])',
+  ];
+
+  var reagentSnippet = [
+    ';; Design your own Reagent components',
+    ';; Keep in mind minimalism',
+  '(require \'[reagent.core :as r]) ',
+'',
+'(defn hello [me]',
+'  [:div',
+'   [:h3 "Hello " me]',
+'   [:p',
+'    "I have " [:strong "bold"] " and"',
+'    [:span {:style {:color "red"}} " red"]',
+ '   " text."]])',
+'',
+'[hello "Reagent"]',
+  ];
+
+  var javascriptSnippet = [
+    '// Write your own JavaScript code',
+    '// The strength of JavaScript is that you can do anything. The weakness is that you will.',
+    '[1, 2, 3].map(x => x + 1);',
+  ];
+
+  var rubySnippet = [
+    '# Type your own Ruby code',
+    '# Keep the elegance and simplicity of Ruby',
+    'class Greeter',
+    '  def initialize(name)',
+    '    @name = name.capitalize',
+    '  end',
+'',
+'      def salute',
+'        "Hello #{@name}!"',
+'      end',
+'    end',
+'',
+'    g = Greeter.new("world")',
+'    g.salute',
+  ];
+
   var defaultSrcByLang = {
-    'javascript': '// Edit the code, the browser evaluates as you type \n[1, 2, 3].map(x => x + 1);'
+    'clojure': clojureSnippet.join('\n'),
+    'javascript': javascriptSnippet.join('\n'),
+    'python': pythonSnippet.join('\n'),
+    'reagent': reagentSnippet.join('\n'),
+    'ruby': rubySnippet.join('\n'),
   };
 
   function setKlipseSettings () {
