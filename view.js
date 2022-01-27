@@ -124,6 +124,12 @@
     history.pushState({}, '', url);
   }
 
+  function editModeURL() {
+    var url = new URL(location);
+    url.pathname =  url.pathname + 'edit.html';
+    return url.toString();
+  }
+
   function addSnippet(snippets, src, lang) {
     var container = document.createElement('div');
     container.className = 'klipse-snippet-container';
@@ -144,7 +150,7 @@
     snippets.appendChild(container);
     var mention = document.createElement('div');
     mention.className = "mention";
-    mention.innerHTML = `Interactive ${languageNames[lang]} snippet powered with \u2764 by <a target = '_new' href='https://viebel.github.io/klipse-embed/edit.html?lang=${lang}'>Klipse</a>`;
+    mention.innerHTML = `Interactive ${languageNames[lang]} snippet powered with \u2764 by <a target = '_new' href='${editModeURL()}'>Klipse</a>`;
     container.appendChild(mention);
   }
 
