@@ -65,6 +65,8 @@
     'reagent': 'Reagent',
   };
 
+  var defaultLanguage = 'javascript';
+
   function clojureModeOn(params) {
     return (params.get("clojure") == "1") || 
       (params.get("lang") == "clojure") ||
@@ -162,6 +164,9 @@
     var args = getSearchParams();
     var src = '';
     var lang;
+    if (!args.get('lang')) {
+      args.set('lang', defaultLanguage);
+    }
     for(var [name, val] of args.entries()) {
       if(name == 'src') {
         src = decodeSrc(val);
