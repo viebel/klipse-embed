@@ -276,11 +276,16 @@
   function iframeStr({width, height, src}) {
     return `<iframe src="${src}" width="${width}" height="${height}"></iframe>`;
   }
+ 
+  function viewModeURL() {
+    var url = new URL(location);
+    url.pathname =  '/';
+    return url;
+  }
 
   function updatePublicURL(input, select) {
-    var url = new URL(location);
     var shareType = select.value;
-    url.pathname =  url.pathname.replace('edit\.html', '')
+    var url = viewModeURL();
     urlString = url.toString();
     if(shareType == "embed") {
       var iframe = document.createElement('iframe');

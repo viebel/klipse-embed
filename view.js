@@ -128,7 +128,7 @@
 
   function editModeURL() {
     var url = new URL(location);
-    url.pathname =  url.pathname + 'edit.html';
+    url.pathname =  '/edit.html';
     return url.toString();
   }
 
