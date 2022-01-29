@@ -27,4 +27,12 @@
     font-family: 'FiraCode', monospace;
 }
 
+.klipse-result .CodeMirror {
+    border-top: 0;
+}
+
+.klipse-snippet > .CodeMirror {
+    border-radius: 2px 2px 0px 0px;
+}
+
 
